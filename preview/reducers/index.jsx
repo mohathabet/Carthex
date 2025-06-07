@@ -7,14 +7,19 @@ const invoiceSettings = appConfig.get('invoice');
 const profileSettings = appConfig.get('profile');
 const generalSettings = appConfig.get('general');
 
+// Ensure we have a valid language code
+const defaultLanguage = ['en', 'fr', 'ar'].includes(generalSettings.language) 
+  ? generalSettings.language 
+  : 'en';
+
 const initialState = {
-  ui: { language: generalSettings.language },
+  ui: { language: defaultLanguage },
   invoice: {},
   profile: profileSettings,
   configs: {
     // Set default from settings
     dateFormat: invoiceSettings.dateFormat,
-    language: generalSettings.language,
+    language: defaultLanguage,
     template: invoiceSettings.template,
     accentColor: '#2CCCE4',
     // Other settings
@@ -26,6 +31,8 @@ const initialState = {
     useSymbol: true,
     customAccentColor: true,
     showRecipient: true,
+    // Document type
+    documentType: 'facture',
   },
 };
 

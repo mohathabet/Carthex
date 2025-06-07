@@ -2,15 +2,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { findIndex } from 'lodash';
-
-// Animation
 import { Motion, spring } from 'react-motion';
+import styled from 'styled-components';
 
-const springConfig = {
-  stiffness: 350,
-  damping: 18,
-  precision: 0.01,
-};
+// Tabs config
+const allTabs = [
+  { title: 'Dashboard', name: 'dashboard', icon: 'ion-ios-pie' },
+  { title: 'Create', name: 'form', icon: 'ion-document-text' },
+  { title: 'Invoices', name: 'invoices', icon: 'ion-ios-filing' },
+  { title: 'Contacts', name: 'contacts', icon: 'ion-person-stalker' },
+  { title: 'TVA/CSS', name: 'tvacss', icon: 'ion-calculator' },
+  { title: 'Settings', name: 'settings', icon: 'ion-ios-gear' },
+];
+
+const springConfig = { stiffness: 350, damping: 18, precision: 0.01 };
 
 const setMarginValue = activeTab => {
   const multiplier = 100 / allTabs.length;
@@ -18,107 +23,63 @@ const setMarginValue = activeTab => {
   return activeTabIndex * multiplier;
 };
 
-const allTabs = [
-  {
-    title: 'Create',
-    name: 'form',
-    icon: 'ion-document-text',
-  },
-  {
-    title: 'Invoices',
-    name: 'invoices',
-    icon: 'ion-ios-filing',
-  },
-  {
-    title: 'Contacts',
-    name: 'contacts',
-    icon: 'ion-person-stalker',
-  },
-  {
-    title: 'Settings',
-    name: 'settings',
-    icon: 'ion-ios-gear',
-  },
-];
-
-// Styles
-import styled from 'styled-components';
-
-export const SideBar = styled.div`
-  flex: 1;
-  position: relative;
+// Styled Components
+const SideBar = styled.div`
+  width: 72px;
+  background: white;
+  padding: 12px 0;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  width: 80px;
-  min-width: 80px;
-  max-width: 80px;
-  background: #2c323a;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
 `;
 
-export const Tab = styled.a`
-  position: relative;
-  color: white;
+const Tab = styled.a`
+  width: 48px;
+  height: 48px;
+  margin: 8px 0;
   display: flex;
-  width: 100%;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  line-height: 1.5;
+  border-radius: 12px;
+  background: ${props => props.active ? 'rgba(72, 61, 255, 0.1)' : 'transparent'};
+  color: ${props => props.active ? '#483dff' : '#666'};
+  font-size: 22px;
+  transition: all 0.2s ease;
+  cursor: pointer;
   text-decoration: none;
-  height: 60px;
+
   &:hover {
-    color: white;
+    background: rgba(72, 61, 255, 0.08);
+    color: #483dff;
     text-decoration: none;
   }
 `;
 
-export const Icon = styled.i`
-  ${props => props.id === 'form' && `color: #6bbb69;`};
-  ${props => props.id === 'contacts' && `color: #469fe5;`};
-  ${props => props.id === 'settings' && `color: #C4C8CC;`};
-  ${props => props.id === 'invoices' && `color: #cbc189;`};
-`;
-
-export const ActiveIndicator = styled.div`
-  height: ${allTabs.length * 60}px;
-  width: 5px;
-  position: absolute;
-  > div {
-    position: absolute;
-    background: #292b2c;
-    width: 80px;
-    border-left: 5px solid #469fe5;
-  }
+const Icon = styled.i`
+  ${props => props.id === 'dashboard' && `color: ${props.active ? '#483dff' : '#666'};`}
+  ${props => props.id === 'form' && `color: ${props.active ? '#483dff' : '#666'};`}
+  ${props => props.id === 'contacts' && `color: ${props.active ? '#483dff' : '#666'};`}
+  ${props => props.id === 'settings' && `color: ${props.active ? '#483dff' : '#666'};`}
+  ${props => props.id === 'invoices' && `color: ${props.active ? '#483dff' : '#666'};`}
 `;
 
 import AppUpdate from './AppUpdate';
 
 function AppNav({ activeTab, changeTab }) {
-  const marginTopValue = setMarginValue(activeTab);
-  const allTabsComponent = allTabs.map(tab => (
-    <Tab key={tab.name} href="#" onClick={() => changeTab(tab.name)}>
-      <Icon id={tab.name} className={tab.icon} />
-    </Tab>
-  ));
   return (
     <SideBar>
-      <div>
-        <Motion style={{ marginTop: spring(marginTopValue, springConfig) }}>
-          {({ marginTop }) => (
-            <ActiveIndicator>
-              <div
-                style={{
-                  height: `${100 / allTabs.length}%`,
-                  top: `${marginTop}%`,
-                }}
-              />
-            </ActiveIndicator>
-          )}
-        </Motion>
-        {allTabsComponent}
-      </div>
+      {allTabs.map(tab => (
+        <Tab
+          key={tab.name}
+          active={activeTab === tab.name}
+          onClick={() => changeTab(tab.name)}
+          title={tab.title}
+        >
+          <Icon id={tab.name} className={tab.icon} active={activeTab === tab.name} />
+        </Tab>
+      ))}
       <AppUpdate />
     </SideBar>
   );

@@ -1,366 +1,494 @@
-// Libs
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { truncate } from 'lodash';
 import styled from 'styled-components';
+import { FiEdit, FiTrash2, FiCopy, FiClock, FiXCircle, FiDollarSign, FiCheck, FiChevronRight, FiChevronLeft, FiChevronUp, FiChevronDown, FiRotateCcw, FiX } from 'react-icons/fi';
 const moment = require('moment');
 const ipc = require('electron').ipcRenderer;
 
-// Helper
 import { formatNumber } from '../../../helpers/formatNumber';
 import { calTermDate } from '../../../helpers/date';
-
-// Custom Components
 import Button from '../shared/Button';
-import SplitButton from '../shared/SplitButton';
 
-// Invoice Container
-const Wrapper = styled.div`
-  position: relative;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: white;
-  margin-bottom: 30px;
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-`;
-
-// Invoice Header
-const Header = styled.div`
+// Styled components
+const InvoiceRowCell = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 25px 30px;
+  box-sizing: border-box;
+  overflow: hidden;
 `;
 
-const StatusBar = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 6px;
-  border-radius: 4px 4px 0 0;
-  ${props => props.status === 'pending' && `background: #469FE5;`} ${props =>
-      props.status === 'paid' && `background: #6BBB69;`} ${props =>
-      props.status === 'refunded' && `background: #4F555C;`} ${props =>
-      props.status === 'cancelled' && `background: #EC476E;`};
-`;
-
-const Status = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  ${props => props.status === 'pending' && `color: #469FE5;`} ${props =>
-      props.status === 'paid' && `color: #6BBB69;`} ${props =>
-      props.status === 'refunded' && `color: #4F555C;`} ${props =>
-      props.status === 'cancelled' && `color: #EC476E;`} span {
-    display: flex;
-    align-items: center;
-    i {
-      margin-right: 5px;
-    }
-  }
-  i.ion-checkmark {
-    font-size: 16px;
-    line-height: 16px;
-  }
-  i.ion-loop {
-    font-size: 18px;
-    line-height: 18px;
-  }
-  i.ion-backspace {
-    font-size: 18px;
-    line-height: 18px;
-  }
-  i.ion-arrow-return-left {
-    font-size: 18px;
-    line-height: 18px;
-  }
-`;
-
-const ButtonsGroup = styled.div`
+const InvoiceRow = styled.div`
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding: 16px 24px;
+  column-gap: 24px;
+  background: ${p => p.darkMode ? '#2A2D35' : '#FFFFFF'};
+  border-bottom: 1px solid ${p => p.darkMode ? '#3A3F4B' : '#E5E7EB'};
+  position: relative;
+  cursor: default;
+  &:hover { background: ${p => p.darkMode ? '#3A3F4B' : '#F9FAFB'}; }
+`;
+
+const CustomCheckbox = styled.input`
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid ${props => props.darkMode ? '#4B5563' : '#D1D5DB'};
+  background-color: ${props => props.checked ? (props.darkMode ? '#4ADE80' : '#16A34A') : 'transparent'};
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:after {
+    content: '';
+    position: absolute;
+    display: ${props => props.checked ? 'block' : 'none'};
+    left: 4px;
+    top: 0px;
+    width: 5px;
+    height: 10px;
+    border: solid ${props => props.darkMode ? '#1E293B' : '#FFFFFF'};
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  &:hover {
+    border-color: ${props => props.darkMode ? '#9CA3AF' : '#9CA3AF'};
+  }
+`;
+
+const CheckboxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ClientSection = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ClientAvatar = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: ${props => props.darkMode ? '#3A3F4B' : '#F3F4F6'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: ${props => props.darkMode ? '#E5E7EB' : '#4B5563'};
+  margin-right: 16px;
+`;
+
+const ClientInfo = styled.div`
+  overflow: hidden;
+`;
+
+const ClientName = styled.div`
+  font-weight: 600;
+  font-size: 15px;
+  color: ${props => props.darkMode ? '#F3F4F6' : '#111827'};
+  margin-bottom: 4px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+const InvoiceId = styled.div`
+  font-size: 13px;
+  color: ${props => props.darkMode ? '#9CA3AF' : '#6B7280'};
+`;
+
+const StatusBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: none;
+
+  background: ${({ status }) => {
+    switch (status) {
+      case 'paid':      return '#D1FAE5';
+      case 'pending':   return '#DBEAFE';
+      case 'refunded':  return '#F3F4F6';
+      case 'cancelled': return '#FEE2E2';
+      default:          return '#F3F4F6';
+    }
+  }};
+
+  color: ${({ status }) => {
+    switch (status) {
+      case 'paid':      return '#059669';
+      case 'pending':   return '#2563EB';
+      case 'refunded':  return '#6B7280';
+      case 'cancelled': return '#DC2626';
+      default:          return '#111827';
+    }
+  }};
+`;
+
+const InvoiceTotal = styled.div`
+  display: flex;
   align-items: center;
   justify-content: flex-end;
-  i {
-    margin-left: 10px;
-    color: #B4B7BA;
-  }
-  i.ion-trash-a {
-    font-size: 24px;
-    line-height: 24px;
-    &:hover {
-      color: #EC476E;
-    }
-  }
-  i.ion-ios-copy {
-    font-size: 24px;
-    line-height: 24px;
-    &:hover {
-      color: #469FE5;
-    }
-  }
-}
+  font-weight: 600;
+  color: ${props => props.darkMode ? '#F3F4F6' : '#111827'};
 `;
 
-// Invoice Body
-const Body = styled.div`
-  padding: 0 30px;
-`;
-
-// Invoice Footer
-const Footer = styled.div`
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 20px;
+const DateColumn = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  > * {
-    flex: 1;
-    margin: 0 10px;
-    &:first-child {
-      flex: 3;
-    }
-  }
+  font-size: 13px;
+  color: ${props => props.darkMode ? '#9CA3AF' : '#6B7280'};
 `;
 
-// Shared Style
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-`;
-
-const Field = styled.div`
+const ActionWrapper = styled.div`
   position: relative;
-  flex: 1;
+`;
+
+const MenuTrigger = styled.button`
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: ${props => props.darkMode ? '#D1D5DB' : '#4B5563'};
+`;
+
+const DropdownMenu = styled.div`
+  position: fixed;
+  right: 16px;
+  top: ${({ triggerTop }) => triggerTop}px;
+  background: ${props => props.darkMode ? '#1F2937' : '#FFFFFF'};
+  border: 1px solid ${props => props.darkMode ? '#374151' : '#E5E7EB'};
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  z-index: 9999;
+  min-width: 160px;
+  white-space: nowrap;
+`;
+
+const MenuItem = styled.div`
+  padding: 10px 16px;
+  font-size: 14px;
+  color: ${props => props.darkMode ? '#F3F4F6' : '#111827'};
+  cursor: pointer;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  margin-bottom: 15px;
-  text-transform: capitalize;
-  h2 {
-    font-size: 21px;
-    color: #283641;
-    margin-bottom: 0;
-    font-weight: 500;
+  align-items: center;
+  
+  svg {
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
   }
-  label {
-    font-size: 11px;
-    color: #b4b7ba;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-    font-weight: 400;
-  }
-  p {
-    font-weight: 300;
-    margin-bottom: 0px;
-    font-size: 14px;
+
+  &:hover {
+    background: ${props => props.darkMode ? '#374151' : '#F9FAFB'};
   }
 `;
 
-// Component
+const SubMenuContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+`;
+
+const SubMenu = styled.div`
+  position: absolute;
+  top: 0;
+  right: 100%;
+  margin-right: 4px;
+  background: ${props => props.darkMode ? '#1F2937' : '#FFFFFF'};
+  border: 1px solid ${props => props.darkMode ? '#374151' : '#E5E7EB'};
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  min-width: 160px;
+  white-space: nowrap;
+`;
+
+const MenuItemContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 class Invoice extends PureComponent {
   constructor(props) {
     super(props);
-    this.viewInvoice = this.viewInvoice.bind(this);
-    this.editInvoice = this.editInvoice.bind(this);
-    this.deleteInvoice = this.deleteInvoice.bind(this);
-    this.duplicateInvoice = this.duplicateInvoice.bind(this);
-    this.displayStatus = this.displayStatus.bind(this);
+    this.state = {
+      menuOpen: false,
+      showStatusSubMenu: false,
+      menuTop: 0
+    };
+    this.menuRef = null;
+    this.triggerRef = null;
+    this.wrapperRef = null;
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+    this.toggleMenu = this.toggleMenu.bind(this);
+    this.handleRowClick = this.handleRowClick.bind(this);
+    this.toggleSubMenu = this.toggleSubMenu.bind(this);
   }
 
-  deleteInvoice() {
-    const { invoice, deleteInvoice } = this.props;
-    deleteInvoice(invoice._id);
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleOutsideClick);
   }
 
-  duplicateInvoice() {
-    const { invoice, duplicateInvoice } = this.props;
-    duplicateInvoice(invoice);
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleOutsideClick);
   }
 
-  editInvoice() {
-    const { invoice, editInvoice } = this.props;
-    editInvoice(invoice);
-  }
-
-  viewInvoice() {
-    ipc.send('preview-invoice', this.props.invoice);
-  }
-
-  displayStatus() {
-    const { t, invoice } = this.props;
-    const { status } = invoice;
-    const { recipient } = invoice;
-    switch (status) {
-      case 'cancelled': {
-        return (
-          <span>
-            <i className="ion-backspace" />
-            {t('invoices:status:cancelled')}
-          </span>
-        );
-      }
-      case 'paid': {
-        return (
-          <span>
-            <i className="ion-checkmark" />
-            {t('invoices:status:paid')}
-          </span>
-        );
-      }
-      case 'refunded': {
-        return (
-          <span>
-            <i className="ion-arrow-return-left" />
-            {t('invoices:status:refunded')}
-          </span>
-        );
-      }
-      default: {
-        return (
-          <span>
-            <i className="ion-loop" />
-            {t('invoices:status:pending')}
-          </span>
-        );
-      }
+  handleOutsideClick(e) {
+    // If click is outside of this row's entire component (incl. menu + trigger)
+    if (
+      this.wrapperRef &&
+      !this.wrapperRef.contains(e.target)
+    ) {
+      this.setState({ menuOpen: false });
     }
   }
+
+  toggleMenu(e) {
+    e.stopPropagation();
+    const triggerTop = this.triggerRef.getBoundingClientRect().top + window.scrollY + 36;
+    this.setState(prev => ({ 
+      menuOpen: !prev.menuOpen,
+      menuTop: triggerTop
+    }));
+  }
+
+  handleRowClick(e, invoice) {
+    console.log("Row clicked!"); // Debug log
+
+    // Skip if clicking on action buttons or menu
+    if (
+      (this.menuRef && typeof this.menuRef.contains === 'function' && this.menuRef.contains(e.target)) ||
+      (this.triggerRef && typeof this.triggerRef.contains === 'function' && this.triggerRef.contains(e.target)) ||
+      e.target.tagName === 'BUTTON' ||
+      e.target.tagName === 'INPUT' ||
+      (e.target.closest && e.target.closest('button')) ||
+      (e.target.closest && e.target.closest('input'))
+    ) {
+      return;
+    }
+
+    ipc.send('preview-invoice', invoice);
+  }
+
+  toggleSubMenu = () => {
+    this.setState(prev => ({
+      showStatusSubMenu: !prev.showStatusSubMenu,
+    }));
+  };
 
   renderDueDate() {
-    const { t, invoice } = this.props;
-    const { dueDate, configs } = invoice;
-    const { useCustom, paymentTerm, selectedDate } = dueDate;
-    const dateFormat = configs ? configs.dateFormat : this.props.dateFormat;
-    // If it's a custom date then return selectedDate
-    if (useCustom === true) {
-      return  moment(selectedDate).format(dateFormat);
+    const { invoice } = this.props;
+    try {
+      const dueDate = invoice.dueDate || {};
+      const useCustom = dueDate.useCustom;
+      const selectedDate = dueDate.selectedDate;
+      const paymentTerm = dueDate.paymentTerm;
+      const dateFormat = (invoice.configs && invoice.configs.dateFormat) || 'MM/DD/YYYY';
+
+      if (useCustom && selectedDate) {
+        return moment(selectedDate).format(dateFormat);
+      }
+
+      const termDate = calTermDate(invoice.created_at, paymentTerm);
+      return moment(termDate).format(dateFormat);
+    } catch (e) {
+      console.warn('Due date error:', e);
+      return '--';
     }
-    // If it's a payment term, calculate the term date and print out
-    const paymentTermDate = calTermDate(invoice.created_at, paymentTerm);
-    return `
-      ${ t(`form:fields:dueDate:paymentTerms:${paymentTerm}:label`) }
-      (
-      ${ moment(paymentTermDate).format(dateFormat) }
-      )
-    `;
   }
 
   render() {
-    const { invoice, setInvoiceStatus, t } = this.props;
-    const { recipient, status, configs } = invoice;
-    const dateFormat = invoice.configs ? invoice.configs.dateFormat : this.props.dateFormat;
-    const statusActions = [
-      {
-        label: t('invoices:status:pending'),
-        action: () => setInvoiceStatus(invoice._id, 'pending'),
-      },
-      {
-        label: t('invoices:status:refunded'),
-        action: () => setInvoiceStatus(invoice._id, 'refunded'),
-      },
-      {
-        label: t('invoices:status:cancelled'),
-        action: () => setInvoiceStatus(invoice._id, 'cancelled'),
-      },
-    ];
+    const {
+      invoice,
+      setInvoiceStatus,
+      deleteInvoice,
+      duplicateInvoice,
+      editInvoice,
+      t,
+      darkMode,
+      isSelected,
+      onToggleSelect,
+      hideCheckbox
+    } = this.props;
+
+    const { menuOpen } = this.state;
+    if (!invoice || !invoice.recipient || !invoice.currency) {
+      return <div style={{ color: 'red' }}>⚠️ Invoice data missing</div>;
+    }
+
+    const fullname = invoice.recipient.fullname || '';
+    const clientInitials = fullname.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
     const currencyBefore = invoice.currency.placement === 'before';
+    const currencyCode = invoice.currency.code || '';
+    const dateFormat = (invoice.configs && invoice.configs.dateFormat) || 'MM/DD/YYYY';
+
     return (
-      <div className="col-lg-6">
-        <Wrapper>
-          <StatusBar status={status} />
-          <Header>
-            <Status status={status}>{this.displayStatus()}</Status>
-            <ButtonsGroup>
-              <Button link onClick={this.duplicateInvoice}>
-                <i className="ion-ios-copy" />
-              </Button>
-              <Button link onClick={this.deleteInvoice}>
-                <i className="ion-trash-a" />
-              </Button>
-            </ButtonsGroup>
-          </Header>
-          <Body>
-            <Row>
-              <Field>
-                <label>{t('invoices:fields:client')}</label>
-                <h2>{recipient.fullname}</h2>
-              </Field>
-            </Row>
-            <Row>
-              <Field>
-                <label>{t('invoices:fields:invoiceID')}</label>
-                <p>
-                  {invoice.invoiceID
-                    ? invoice.invoiceID
-                    : truncate(invoice._id, {
-                        length: 8,
-                        omission: '',
-                      })}
-                </p>
-              </Field>
-              <Field>
-                <label>{t('invoices:fields:total')}</label>
-                <p>
-                  {currencyBefore ? invoice.currency.code : null}
-                  {' '}
-                  { formatNumber(
-                      invoice.grandTotal,
-                      invoice.currency.fraction,
-                      invoice.currency.separator)
-                  }
-                  {' '}
-                  {currencyBefore ? null : invoice.currency.code}
-                </p>
-              </Field>
-            </Row>
-            <Row>
-              <Field>
-                <label>{t('invoices:fields:createdDate')}</label>
-                <p>{moment(invoice.created_at).format(dateFormat)}</p>
-              </Field>
-              <Field>
-                <label>{t('invoices:fields:dueDate')}</label>
-                <p>
-                  { invoice.dueDate && this.renderDueDate() }
-                </p>
-              </Field>
-            </Row>
-          </Body>
-          <Footer>
-            <SplitButton
-              mainButton={{
-                label: t('invoices:btns:markAsPaid'),
-                action: () => setInvoiceStatus(invoice._id, 'paid'),
-              }}
-              options={statusActions}
-            />
-            <Button onClick={this.editInvoice}>
-              {t('invoices:btns:edit')}
-            </Button>
-            <Button onClick={this.viewInvoice}>
-              {t('invoices:btns:view')}
-            </Button>
-          </Footer>
-        </Wrapper>
+      <div ref={(ref) => (this.wrapperRef = ref)}>
+        <InvoiceRow darkMode={darkMode} onClick={e => this.handleRowClick(e, invoice)}>
+          {!hideCheckbox && (
+            <InvoiceRowCell style={{ width: 56 }}>
+              <CustomCheckbox
+                type="checkbox"
+                checked={isSelected}
+                onChange={onToggleSelect}
+                darkMode={darkMode}
+              />
+            </InvoiceRowCell>
+          )}
+
+          <InvoiceRowCell style={{ width: 120 }}>
+            <InvoiceId darkMode={darkMode}>
+              {invoice.invoiceID || truncate(invoice._id || '', { length: 8 })}
+            </InvoiceId>
+          </InvoiceRowCell>
+
+          <InvoiceRowCell style={{ flex: 1 }}>
+            <ClientSection>
+              <ClientAvatar darkMode={darkMode}>{clientInitials}</ClientAvatar>
+              <ClientInfo>
+                <ClientName darkMode={darkMode}>{fullname}</ClientName>
+              </ClientInfo>
+            </ClientSection>
+          </InvoiceRowCell>
+
+          <InvoiceRowCell style={{ width: 140 }}>
+            <DateColumn darkMode={darkMode}>
+              {moment(invoice.created_at || new Date()).format(dateFormat)}
+            </DateColumn>
+          </InvoiceRowCell>
+
+          <InvoiceRowCell style={{ width: 120 }}>
+            <StatusBadge status={invoice.status}>
+              {invoice.status === 'paid'      && <FiCheck size={14} />}
+              {invoice.status === 'pending'   && <FiClock size={14} />}
+              {invoice.status === 'refunded'  && <FiRotateCcw size={14} />}
+              {invoice.status === 'cancelled' && <FiX size={14} />}
+              {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
+            </StatusBadge>
+          </InvoiceRowCell>
+
+          <InvoiceRowCell style={{ width: 140, justifyContent: 'flex-end' }}>
+            <InvoiceTotal darkMode={darkMode}>
+              {currencyBefore && currencyCode}{' '}
+              {formatNumber(invoice.grandTotal || 0, invoice.currency.fraction || 2, invoice.currency.separator || ',')}{' '}
+              {!currencyBefore && currencyCode}
+            </InvoiceTotal>
+          </InvoiceRowCell>
+
+          <InvoiceRowCell
+            style={{ width: 60, justifyContent: 'flex-end' }}
+            className="no-click"
+          >
+            <div ref={el => { this.triggerRef = el; }}>
+              <MenuTrigger
+                onClick={this.toggleMenu}
+                darkMode={darkMode}
+              >
+                ⋯
+              </MenuTrigger>
+              {menuOpen && (
+                <DropdownMenu
+                  ref={el => { this.menuRef = el; }}
+                  darkMode={darkMode}
+                  triggerTop={this.state.menuTop}
+                >
+                  {invoice.status !== 'paid' && (
+                    <MenuItem
+                      onClick={() => setInvoiceStatus(invoice._id, 'paid')}
+                      darkMode={darkMode}
+                      style={{ color: darkMode ? '#4ADE80' : '#16A34A' }}
+                    >
+                      <FiCheck />
+                      Mark as Paid
+                    </MenuItem>
+                  )}
+                  <MenuItem onClick={() => editInvoice(invoice)} darkMode={darkMode}>
+                    <FiEdit />
+                    Edit
+                  </MenuItem>
+                  <MenuItem onClick={() => duplicateInvoice(invoice)} darkMode={darkMode}>
+                    <FiCopy />
+                    Duplicate
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => deleteInvoice(invoice._id)}
+                    darkMode={darkMode}
+                    style={{ color: darkMode ? '#F87171' : '#DC2626' }}
+                  >
+                    <FiTrash2 />
+                    Delete
+                  </MenuItem>
+                  <div style={{ position: 'relative' }}>
+                    <MenuItem
+                      onClick={this.toggleSubMenu}
+                      darkMode={darkMode}
+                      style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+                    >
+                      {this.state.showStatusSubMenu ? (
+                        <FiChevronUp style={{ opacity: 0.3, fontSize: 16 }} />
+                      ) : (
+                        <FiChevronDown style={{ opacity: 0.3, fontSize: 16 }} />
+                      )}
+                      Change Status
+                    </MenuItem>
+
+                    {this.state.showStatusSubMenu && (
+                      <SubMenu darkMode={darkMode} style={{ right: '100%', marginRight: 4 }}>
+                        <MenuItem onClick={() => setInvoiceStatus(invoice._id, 'pending')} darkMode={darkMode}>
+                          <FiClock />
+                          Set as Pending
+                        </MenuItem>
+                        <MenuItem onClick={() => setInvoiceStatus(invoice._id, 'refunded')} darkMode={darkMode}>
+                          <FiDollarSign />
+                          Set as Refunded
+                        </MenuItem>
+                        <MenuItem onClick={() => setInvoiceStatus(invoice._id, 'cancelled')} darkMode={darkMode}>
+                          <FiXCircle />
+                          Set as Cancelled
+                        </MenuItem>
+                      </SubMenu>
+                    )}
+                  </div>
+                </DropdownMenu>
+              )}
+            </div>
+          </InvoiceRowCell>
+        </InvoiceRow>
       </div>
     );
   }
 }
 
 Invoice.propTypes = {
-  dateFormat: PropTypes.string.isRequired,
+  dateFormat: PropTypes.string,
   deleteInvoice: PropTypes.func.isRequired,
   duplicateInvoice: PropTypes.func.isRequired,
   editInvoice: PropTypes.func.isRequired,
   invoice: PropTypes.object.isRequired,
   setInvoiceStatus: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
+  darkMode: PropTypes.bool,
+  isSelected: PropTypes.bool,
+  onToggleSelect: PropTypes.func.isRequired,
+  hideCheckbox: PropTypes.bool,
+};
+
+Invoice.defaultProps = {
+  darkMode: false,
+  isSelected: false,
+  hideCheckbox: false,
 };
 
 export default Invoice;

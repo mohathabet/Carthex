@@ -7,53 +7,67 @@ import _withFadeInAnimation from '../../components/shared/hoc/_withFadeInAnimati
 
 // Styles
 import styled from 'styled-components';
-import { Part, Row, Field } from '../shared/Part';
+import {
+  FormCard,
+  FormLabel,
+  FormInput,
+  FormGrid,
+  FormField
+} from '../shared/FormStyles';
+
+const RecipientFormWrapper = styled(FormCard)`
+  margin-bottom: 0;
+`;
 
 export function RecipientForm({ t, formData, updateRecipientForm }) {
   const { fullname, company, email, phone } = formData;
   return (
-    <Part>
-      <Row>
-        <Field>
-          <label className="itemLabel">{t('common:fields:fullname')} *</label>
-          <input
+    <RecipientFormWrapper>
+      <FormGrid>
+        <FormField>
+          <FormLabel>{t('common:fields:fullname')} *</FormLabel>
+          <FormInput
             name="fullname"
             type="text"
             value={fullname || ''}
             onChange={updateRecipientForm}
+            placeholder={t('common:fields:fullname')}
           />
-        </Field>
-        <Field>
-          <label className="itemLabel">{t('common:fields:company')}</label>
-          <input
+        </FormField>
+        <FormField>
+          <FormLabel>{t('common:fields:company')}</FormLabel>
+          <FormInput
             name="company"
             type="text"
             value={company || ''}
             onChange={updateRecipientForm}
+            placeholder={t('common:fields:company')}
           />
-        </Field>
-      </Row>
-      <Row>
-        <Field>
-          <label className="itemLabel">{t('common:fields:email')} *</label>
-          <input
+        </FormField>
+      </FormGrid>
+      <FormGrid>
+        <FormField>
+          <FormLabel>{t('common:fields:email')} *</FormLabel>
+          <FormInput
             name="email"
-            type="text"
+            type="email"
             value={email || ''}
             onChange={updateRecipientForm}
+            placeholder={t('common:fields:email')}
           />
-        </Field>
-        <Field>
-          <label className="itemLabel">{t('common:fields:phone')}</label>
-          <input
+        </FormField>
+        <FormField>
+          <FormLabel>{t('common:fields:phone')}</FormLabel>
+          <FormInput
             name="phone"
-            type="text"
+            type="tel"
             value={phone || ''}
             onChange={updateRecipientForm}
+            placeholder={t('common:fields:phone')}
           />
-        </Field>
-      </Row>
-    </Part>
+        </FormField>
+      </FormGrid>
+    </RecipientFormWrapper>
   );
 }
 

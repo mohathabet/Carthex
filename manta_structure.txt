@@ -1,0 +1,198 @@
+Manta/
+├── .github/
+├── .git/
+├── __mocks__/
+│   ├── electron-settings.js
+│   ├── electron.js
+│   ├── pouchdb-browser.js
+│   └── uuid/
+│       └── v4.js
+├── app/
+│   ├── actions/
+│   ├── components/
+│   ├── constants/
+│   ├── containers/
+│   ├── helpers/
+│   ├── middlewares/
+│   ├── reducers/
+│   ├── renderers/
+│   ├── store/
+│   ├── App.jsx
+│   ├── index.html
+│   └── index.jsx
+├── build/
+├── helpers/
+│   ├── __tests__/
+│   ├── center-on-primary-display.js
+│   ├── date.js
+│   ├── formatNumber.js
+│   └── notify.js
+├── i18n/
+├── libs/
+│   ├── __mocks__/
+│   ├── __tests__/
+│   ├── currencies.json
+│   ├── dragNdrop.js
+│   ├── paymentTerms.js
+│   └── sounds.js
+├── main/
+├── modal/
+├── node_modules/
+├── package/
+├── preview/
+│   ├── actions/
+│   │   ├── __test__/
+│   │   │   └── index.spec.js
+│   │   └── index.jsx
+│   ├── components/
+│   │   ├── shared/
+│   │   │   └── index.js
+│   │   └── sidebar/
+│   │       ├── AccentColor.jsx
+│   │       ├── Actions.jsx
+│   │       ├── Alignment.jsx
+│   │       ├── DateFormat.jsx
+│   │       ├── DocumentType.jsx
+│   │       ├── FontSize.jsx
+│   │       ├── Language.jsx
+│   │       ├── LogoSize.jsx
+│   │       ├── Template.jsx
+│   │       └── Toggler.jsx
+│   ├── constants/
+│   │   └── actions.jsx
+│   ├── containers/
+│   │   ├── MainContent.jsx
+│   │   └── SideBar.jsx
+│   ├── helper/
+│   │   └── index.js
+│   ├── i18n/
+│   │   └── form.json
+│   ├── reducers/
+│   │   ├── __test__/
+│   │   │   └── index.spec.js
+│   │   └── index.jsx
+│   ├── styles/
+│   ├── templates/
+│   │   ├── business/
+│   │   │   ├── components/
+│   │   │   │   ├── Footer.jsx
+│   │   │   │   ├── Header.jsx
+│   │   │   │   ├── Logo.jsx
+│   │   │   │   └── Main.jsx
+│   │   │   └── index.jsx
+│   │   └── minimal/
+│   │       ├── components/
+│   │       │   ├── Footer.jsx
+│   │       │   ├── Header.jsx
+│   │       │   └── Main.jsx
+│   │       └── index.jsx
+│   ├── Viewer.jsx
+│   ├── index.html
+│   └── index.jsx
+├── static/
+│   ├── css/
+│   │   ├── preview/
+│   │   │   ├── font.css
+│   │   │   └── print.css
+│   │   ├── bootstrap.min.css
+│   │   ├── contact.css
+│   │   ├── date-picker.css
+│   │   ├── form.css
+│   │   ├── general.css
+│   │   ├── ionicons.min.css
+│   │   ├── items.css
+│   │   └── layout.css
+│   ├── fonts/
+│   │   ├── cairo/
+│   │   │   ├── Cairo-Black.ttf
+│   │   │   ├── Cairo-Bold.ttf
+│   │   │   ├── Cairo-ExtraBold.ttf
+│   │   │   ├── Cairo-ExtraLight.ttf
+│   │   │   ├── Cairo-Light.ttf
+│   │   │   ├── Cairo-Medium.ttf
+│   │   │   ├── Cairo-Regular.ttf
+│   │   │   └── Cairo-SemiBold.ttf
+│   │   ├── Lora/
+│   │   │   └── Lora-Regular.ttf
+│   │   ├── Montserrat/
+│   │   │   ├── Montserrat-Italic.ttf
+│   │   │   ├── Montserrat-Light.ttf
+│   │   │   ├── Montserrat-Medium.ttf
+│   │   │   └── Montserrat-Regular.ttf
+│   │   ├── SourceSerifPro/
+│   │   │   └── SourceSerifPro-Regular.ttf
+│   │   ├── ionicons.eot
+│   │   ├── ionicons.svg
+│   │   ├── ionicons.ttf
+│   │   └── ionicons.woff
+│   ├── imgs/
+│   │   ├── default_logo.svg
+│   │   └── manta-logo.png
+│   └── sounds/
+│       ├── cs/
+│       │   ├── add.wav
+│       │   ├── dialog.wav
+│       │   ├── index.js
+│       │   ├── reload.wav
+│       │   ├── remove.wav
+│       │   ├── startup.wav
+│       │   ├── success.wav
+│       │   ├── tap.wav
+│       │   └── warning.wav
+│       └── default/
+│           ├── add.wav
+│           ├── dialog.wav
+│           ├── index.js
+│           ├── reload.wav
+│           ├── remove.wav
+│           ├── startup.wav
+│           ├── success.wav
+│           ├── tap.wav
+│           └── warning.wav
+├── test/
+│   ├── helper.js
+│   └── spec.js
+├── tour/
+│   ├── components/
+│   │   ├── Actions.jsx
+│   │   ├── Slide.jsx
+│   │   └── slides/
+│   │       ├── Create.jsx
+│   │       ├── Preview.jsx
+│   │       ├── Save.jsx
+│   │       ├── Success.jsx
+│   │       └── Welcome.jsx
+│   ├── containers/
+│   │   └── Slider.jsx
+│   ├── imgs/
+│   │   ├── Create.svg
+│   │   ├── Preview.svg
+│   │   ├── Save.svg
+│   │   ├── Success.svg
+│   │   ├── Templates.svg
+│   │   └── Welcome.svg
+│   ├── Tour.jsx
+│   ├── index.html
+│   └── index.jsx
+├── .babelrc
+├── .eslintrc.yml
+├── .gitignore
+├── .travis.yml
+├── LICENSE
+├── README.md
+├── app.js
+├── dev-app-update.yml
+├── electron-builder.yml
+├── jest.config.js
+├── jest.setup.js
+├── jest.shim.js
+├── manta_tree.txt
+├── npm-5.6.0.tar
+├── npm-5.6.0.tgz
+├── package.json
+├── project_structure.txt
+├── structure.txt
+├── tree.txt
+├── webpack.config.js
+├── webpack.parts.js
+└── yarn.lock 

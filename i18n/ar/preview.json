@@ -1,0 +1,45 @@
+{
+  "sidebar": {
+    "template": "النموذج",
+    "alignment": {
+      "name": "المحاذاة",
+      "top": "أعلى",
+      "middle": "الوسط",
+      "bottom": "أسفل"
+    },
+    "fontSize": "حجم الخط",
+    "toggle": {
+      "name": "الخيارات",
+      "logo": "الشعار",
+      "symbol": "الرمز",
+      "recipient": "العميل"
+    },
+    "accentColor": {
+      "name": "اللون الأساسي",
+      "useCustom": "استخدام لون مخصص"
+    },
+    "actions": {
+      "name": "الإجراءات",
+      "savePDF": "حفظ PDF",
+      "saveConfigs": "حفظ الإعدادات"
+    }
+  },
+  "common": {
+    "billedTo": "موجه إلى",
+    "chooseInvoiceToPreview": "الرجاء اختيار فاتورة للمعاينة",
+    "created": "تاريخ الإنشاء",
+    "due": "تاريخ الاستحقاق",
+    "invoice": "فاتورة",
+    "facture": "فاتورة",
+    "recu": "إيصال دفع",
+    "bon": "إشعار تسليم",
+    "devis": "عرض سعر",
+    "itemDescription": "وصف العنصر",
+    "notice": "ملاحظة",
+    "order": "رقم",
+    "price": "السعر",
+    "qty": "الكمية",
+    "subtotal": "الإجمالي الفرعي",
+    "total": "الإجمالي"
+  }
+} 

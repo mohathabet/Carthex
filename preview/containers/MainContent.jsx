@@ -37,6 +37,8 @@ const Page = styled.div`
   box-shadow: 0 0 10px rgba(0,0,0,.1);
   display: flex;
   border-radius: 4px;
+  direction: ${props => (props.language === 'ar' ? 'rtl' : 'ltr')};
+  text-align: ${props => (props.language === 'ar' ? 'right' : 'left')};
 `;
 
 // Components
@@ -56,12 +58,12 @@ class MainContent extends Component {
   }
 
   render() {
-    const { t, invoice  } = this.props;
+    const { t, invoice, configs } = this.props;
     return (
       <Wrapper>
         {invoice._id ? (
           <div className="print-area">
-            <Page>
+            <Page language={configs.language}>
               {this.renderTemplate()}
             </Page>
           </div>

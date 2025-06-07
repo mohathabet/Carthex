@@ -2,20 +2,14 @@ import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 
 const appConfig = require('electron').remote.require('electron-settings');
-const defaultLanguage = appConfig.get('general.language');
+const defaultLanguage = appConfig.get('general.language') || 'en';
 const isDev = require('electron-is-dev');
 const moment = require('moment');
 
 // Language Files
-import de from './de';
 import en from './en';
 import fr from './fr';
-import id from './id';
-import it from './it';
-import sk from './sk';
-import urPK from './ur-PK';
-import vi from './vi';
-import zhCN from './zh-CN';
+import ar from './ar/';
 
 i18n.use(reactI18nextModule).init({
   lng: defaultLanguage,
@@ -23,15 +17,9 @@ i18n.use(reactI18nextModule).init({
   debug: isDev,
   defaultNS: 'form',
   resources: {
-    de,
     en,
     fr,
-    id,
-    it,
-    sk,
-    "ur-PK": urPK,
-    vi,
-    "zh-CN": zhCN
+    ar
   },
   interpolation: {
     function(value, format, lng) {

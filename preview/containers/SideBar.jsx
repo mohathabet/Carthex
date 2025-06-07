@@ -39,6 +39,7 @@ import LogoSize from '../components/sidebar/LogoSize';
 import Language from '../components/sidebar/Language';
 import Template from '../components/sidebar/Template';
 import Toggler from '../components/sidebar/Toggler';
+import DocumentType from '../components/sidebar/DocumentType';
 
 class SideBar extends Component {
   constructor(props) {
@@ -89,6 +90,13 @@ class SideBar extends Component {
     return (
       <OverflowWrapper>
         <Wrapper>
+          
+          <DocumentType
+            documentType={configs.documentType || 'facture'}
+            handleInputChange={(e) =>
+              this.props.updateConfigs({ name: 'documentType', value: e.target.value })
+            }
+          />
           <Template
             t={t}
             UILang={UILang}

@@ -3,7 +3,17 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { isEqual } from 'lodash';
 // Custom Components
-import { Section, Header } from '../shared/Section';
+import { Section } from '../shared/Section';
+import {
+  FormCard,
+  FormLabel,
+  FormInput,
+  FormSelect,
+  FormGrid,
+  FormField,
+  FormActions,
+  FormButton
+} from '../shared/FormStyles';
 // Animation
 import _withFadeInAnimation from '../shared/hoc/_withFadeInAnimation';
 // Styles
@@ -58,7 +68,8 @@ export class Tax extends PureComponent {
     return isEqual(this.state, this.props.savedSettings);
   }
 
-  saveAsDefault() {
+  saveAsDefault(e) {
+    e.preventDefault();
     const { updateSavedSettings } = this.props;
     updateSavedSettings('tax', this.state);
   }
@@ -67,56 +78,52 @@ export class Tax extends PureComponent {
     const { t } = this.props;
     return (
       <Section>
-        <Header>
-          <label className="itemLabel">{t('form:fields:tax:name')}</label>
-          {!this.isSettingsSaved() && (
-            <a href="#" onClick={this.saveAsDefault}>
-              <i className="ion-checkmark" /> {t('common:saveAsDefault')}
-            </a>
-          )}
-        </Header>
-        <Part>
-          <Row>
-            <Field>
-              <label className="itemLabel">{t('form:fields:tax:id')}</label>
-              <TaxID>
-                <input
-                  name="tin"
-                  type="text"
-                  value={this.state.tin}
-                  onChange={this.handleInputChange}
-                  placeholder={t('form:fields:tax:id')}
-                />
-              </TaxID>
-            </Field>
-          </Row>
-          <Row>
-            <Field>
-              <label className="itemLabel">{t('common:amount')} (%)</label>
-              <TaxAmount>
-                <input
-                  name="amount"
-                  type="number"
-                  step="0.01"
-                  value={this.state.amount}
-                  onChange={this.handleInputChange}
-                  placeholder={t('common:amount')}
-                />
-              </TaxAmount>
-            </Field>
-            <Field>
-              <label className="itemLabel">{t('form:fields:tax:method')}</label>
-              <select
+        <FormCard>
+          <FormLabel>{t('form:fields:tax:name')}</FormLabel>
+          <FormGrid>
+            <FormField>
+              <FormLabel>{t('form:fields:tax:id')}</FormLabel>
+              <FormInput
+                name="tin"
+                type="text"
+                value={this.state.tin}
+                onChange={this.handleInputChange}
+                placeholder={t('form:fields:tax:id')}
+              />
+            </FormField>
+          </FormGrid>
+          <FormGrid>
+            <FormField>
+              <FormLabel>{t('common:amount')} (%)</FormLabel>
+              <FormInput
+                name="amount"
+                type="number"
+                step="0.01"
+                value={this.state.amount}
+                onChange={this.handleInputChange}
+                placeholder={t('common:amount')}
+              />
+            </FormField>
+            <FormField>
+              <FormLabel>{t('form:fields:tax:method')}</FormLabel>
+              <FormSelect
                 name="method"
                 value={this.state.method}
                 onChange={this.handleInputChange}
               >
                 <option value="default">{t('common:default')}</option>
                 <option value="reverse">{t('form:fields:tax:reverse')}</option>
-              </select>
-            </Field>
-          </Row>
-        </Part>
+              </FormSelect>
+            </FormField>
+          </FormGrid>
+          {!this.isSettingsSaved() && (
+            <FormActions>
+              <FormButton variant="secondary" onClick={this.saveAsDefault}>
+                {t('common:saveAsDefault')}
+              </FormButton>
+            </FormActions>
+          )}
+        </FormCard>
       </Section>
     );
   }

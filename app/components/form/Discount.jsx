@@ -5,6 +5,14 @@ import { isEmpty } from 'lodash';
 
 // Custom Components
 import { Section } from '../shared/Section';
+import {
+  FormCard,
+  FormLabel,
+  FormInput,
+  FormField,
+  RadioGroup,
+  RadioLabel
+} from '../shared/FormStyles';
 
 // Animation
 import _withFadeInAnimation from '../shared/hoc/_withFadeInAnimation';
@@ -83,48 +91,40 @@ export class Discount extends Component {
     const { t } = this.props;
     return (
       <Section>
-        <DiscountWrapper>
-          <label className="itemLabel">
-            {t('form:fields:discount.name')}
-          </label>
-          <DiscountContent>
-            <DiscountAmount>
+        <FormCard>
+          <FormLabel>{t('form:fields:discount.name')}</FormLabel>
+          <FormField>
+            <FormInput
+              name="amount"
+              type="number"
+              value={this.state.amount}
+              onChange={this.handleInputChange}
+              placeholder={t('common:amount')}
+            />
+          </FormField>
+          <RadioGroup>
+            <RadioLabel>
               <input
-                name="amount"
-                type="number"
-                value={this.state.amount}
+                name="type"
+                type="radio"
                 onChange={this.handleInputChange}
-                placeholder={t('common:amount')}
+                checked={this.state.type === 'percentage'}
+                value="percentage"
               />
-            </DiscountAmount>
-            <DiscountType>
-              <div className="radio">
-                <label>
-                  <input
-                    name="type"
-                    type="radio"
-                    onChange={this.handleInputChange}
-                    checked={this.state.type === 'percentage'}
-                    value="percentage"
-                  />
-                  {t('form:fields:discount:percentage')}
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input
-                    name="type"
-                    type="radio"
-                    onChange={this.handleInputChange}
-                    checked={this.state.type === 'flat'}
-                    value="flat"
-                  />
-                  {t('form:fields:discount:flat')}
-                </label>
-              </div>
-            </DiscountType>
-          </DiscountContent>
-        </DiscountWrapper>
+              {t('form:fields:discount:percentage')}
+            </RadioLabel>
+            <RadioLabel>
+              <input
+                name="type"
+                type="radio"
+                onChange={this.handleInputChange}
+                checked={this.state.type === 'flat'}
+                value="flat"
+              />
+              {t('form:fields:discount:flat')}
+            </RadioLabel>
+          </RadioGroup>
+        </FormCard>
       </Section>
     );
   }

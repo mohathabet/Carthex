@@ -2,13 +2,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-// Styles
+// Custom Components
+import {
+  FormField,
+  FormSelect
+} from '../shared/FormStyles';
+
+// Animation
 import _withFadeInAnimation from '../shared/hoc/_withFadeInAnimation';
-import styled from 'styled-components';
-const Container = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-`;
 
 // Payment Terms
 import { paymentTerms } from '../../../libs/paymentTerms';
@@ -45,14 +46,14 @@ export class DueDateTerms extends Component {
       </option>
     ));
     return (
-      <Container>
-        <select
+      <FormField>
+        <FormSelect
           onChange={this.handleInputChange}
           value={paymentTerm === null ? paymentTerms[0] : paymentTerm}
         >
           { termOptions }
-        </select>
-      </Container>
+        </FormSelect>
+      </FormField>
     );
   }
 }

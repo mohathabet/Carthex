@@ -6,6 +6,12 @@ import PropTypes from 'prop-types';
 import { Section } from '../shared/Section';
 import DueDatePicker from './DueDatePicker';
 import DueDateTerms from './DueDateTerms';
+import {
+  FormCard,
+  FormLabel,
+  RadioGroup,
+  RadioLabel
+} from '../shared/FormStyles';
 
 // Animation
 import _withFadeInAnimation from '../shared/hoc/_withFadeInAnimation';
@@ -56,23 +62,23 @@ export class DueDate extends Component {
     const { selectedDate, paymentTerm } = this.state;
     return (
       <Section>
-        <label className="itemLabel">{t('form:fields:dueDate:name')}</label>
-        {this.state.useCustom ? (
-          <DueDatePicker
-            t={t}
-            selectedDate={selectedDate}
-            updateCustomDate={this.updateCustomDate}
-          />
-        ) : (
-          <DueDateTerms
-            t={t}
-            paymentTerm={paymentTerm}
-            updatePaymentTerm={this.updatePaymentTerm}
-          />
-        )}
-        <div>
-          <div className="radio">
-            <label>
+        <FormCard>
+          <FormLabel>{t('form:fields:dueDate:name')}</FormLabel>
+          {this.state.useCustom ? (
+            <DueDatePicker
+              t={t}
+              selectedDate={selectedDate}
+              updateCustomDate={this.updateCustomDate}
+            />
+          ) : (
+            <DueDateTerms
+              t={t}
+              paymentTerm={paymentTerm}
+              updatePaymentTerm={this.updatePaymentTerm}
+            />
+          )}
+          <RadioGroup>
+            <RadioLabel>
               <input
                 type="radio"
                 onChange={this.toggleDatePicker}
@@ -80,10 +86,8 @@ export class DueDate extends Component {
                 value="new"
               />
               Custom Date
-            </label>
-          </div>
-          <div className="radio">
-            <label>
+            </RadioLabel>
+            <RadioLabel>
               <input
                 type="radio"
                 onChange={this.toggleDatePicker}
@@ -91,9 +95,9 @@ export class DueDate extends Component {
                 value="select"
               />
               Select Payment Term
-            </label>
-          </div>
-        </div>
+            </RadioLabel>
+          </RadioGroup>
+        </FormCard>
       </Section>
     );
   }

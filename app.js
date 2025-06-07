@@ -162,10 +162,10 @@ function addDevToolsExtension() {
 
 function setInitialValues() {
   // Default Logo
-  const logoPath = path.resolve(__dirname, './static/imgs/default_logo.svg');
+  const logoPath = path.resolve(__dirname, './static/imgs/carthex.png');
   const logoData = fs.readFileSync(logoPath);
   const logoBase64String =
-    'data:image/svg+xml;base64,' + logoData.toString('base64');
+    'data:image/png;base64,' + logoData.toString('base64');
   // Default Options
   const defaultOptions = {
     tour: {

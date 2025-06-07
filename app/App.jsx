@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 const ipc = require('electron').ipcRenderer;
 
+import Tour from '../tour/Tour'; // adjust path if needed
+
+
 // Actions
 import * as UIActions from './actions/ui';
 import * as FormActions from './actions/form';

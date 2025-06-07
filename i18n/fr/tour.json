@@ -6,24 +6,24 @@
   },
   "slides": {
     "welcome": {
-      "heading": "👋 Salut !",
-      "description": "Merci de me donner une chance. Laissez-moi vous montrer comment créer de sublimes factures en seulement 3 étapes simples"
+      "heading": "👋 Bonjour !",
+      "description": "Merci d’avoir choisi Carthex. Laissez-moi vous montrer comment créer des factures impressionnantes en seulement 3 étapes simples."
     },
     "create": {
       "heading": "Étape 1. Créer",
-      "description": "Manta a une interface de formulaire flexible. Il garde les choses simples par défaut, mais vous pouvez toujours activer/désactiver des champs supplémentaires à chaque fois que cela vous semble nécessaire."
+      "description": "Carthex dispose d’un formulaire flexible. Il reste simple par défaut, mais vous pouvez toujours activer ou désactiver des champs supplémentaires selon vos besoins."
     },
     "preview": {
       "heading": "Étape 2. Personnaliser",
-      "description": "Manta est livré avec des modèles professionnels qui peuvent être personnalisés afin de correspondre au style de votre marque."
+      "description": "Carthex propose des modèles professionnels que vous pouvez personnaliser pour correspondre à l'identité de votre marque."
     },
     "save": {
-      "heading": "Étape 3. Sauvegarder",
-      "description": "Une fois satisfait de l'apparence de la facture, vous pouvez l'enregistrer en PDF pour plus tard. Imprimez-la ou envoyez-la par email dès maintenant pour impressionner vos clients avec Manta!"
+      "heading": "Étape 3. Enregistrer",
+      "description": "Une fois satisfait du rendu de la facture, vous pouvez l’enregistrer au format PDF. Imprimez-la ou envoyez-la par e-mail — utilisez Carthex pour impressionner vos clients !"
     },
     "success": {
       "heading": "Terminé !!! ✋️",
-      "description": "Et voilà les 3 étapes simples pour créer de superbes factures avec Manta.\nN'oubliez pas de mettre à jour le profil de la société ainsi que son logo avant d'éditer de vraie factures."
+      "description": "🔒 Note importante : Ce produit est vendu exclusivement par Carthex. Si vous l'avez obtenu ailleurs, il se peut qu'il ne s'agisse pas d'une version officielle. N'hésitez pas à nous contacter pour vérifier l'authenticité de votre copie."
     }
   }
 }

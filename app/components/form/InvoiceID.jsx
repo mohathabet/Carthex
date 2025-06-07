@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 
 // Custom Components
 import { Section } from '../shared/Section';
+import {
+  FormCard,
+  FormLabel,
+  FormInput
+} from '../shared/FormStyles';
 
 // Animation
 import _withFadeInAnimation from '../shared/hoc/_withFadeInAnimation';
@@ -45,13 +50,16 @@ export class InvoiceID extends PureComponent {
     const { t } = this.props;
     return (
       <Section>
-        <label className="itemLabel">{t('invoices:fields:invoiceID')}</label>
-        <input
-          name="invoiceID"
-          type="text"
-          onChange={this.handleInputChange}
-          value={this.state.invoiceID}
-        />
+        <FormCard>
+          <FormLabel>{t('invoices:fields:invoiceID')}</FormLabel>
+          <FormInput
+            name="invoiceID"
+            type="text"
+            onChange={this.handleInputChange}
+            value={this.state.invoiceID}
+            placeholder={t('invoices:fields:invoiceID')}
+          />
+        </FormCard>
       </Section>
     );
   }

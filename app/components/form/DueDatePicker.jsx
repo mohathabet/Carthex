@@ -6,12 +6,46 @@ import moment from 'moment';
 // React Dates
 import { SingleDatePicker } from 'react-dates';
 
-// Styles
+// Custom Components
+import {
+  FormField,
+  FormButton
+} from '../shared/FormStyles';
+
+// Animation
 import _withFadeInAnimation from '../shared/hoc/_withFadeInAnimation';
+
+// Styles
 import styled from 'styled-components';
-const Container = styled.div`
+
+const DatePickerContainer = styled(FormField)`
   display: flex;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 20px;
+
+  .SingleDatePicker {
+    flex: 1;
+  }
+
+  .SingleDatePickerInput {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #1f2937;
+    transition: all 0.2s ease;
+    background: white;
+
+    &:hover {
+      border-color: #d1d5db;
+    }
+
+    &:focus-within {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+  }
 `;
 
 // Component
@@ -33,7 +67,8 @@ export class DueDatePicker extends PureComponent {
     this.props.updateCustomDate(selectedDate);
   }
 
-  clearDate() {
+  clearDate(e) {
+    e.preventDefault();
     this.onDateChange(null);
   }
 
@@ -41,12 +76,12 @@ export class DueDatePicker extends PureComponent {
     const { t, selectedDate } = this.props;
     const dueDate = selectedDate === null ? null : moment(selectedDate);
     return (
-      <Container>
+      <DatePickerContainer>
         <SingleDatePicker
           id="invoice-duedate"
           placeholder={t('form:fields:dueDate:placeHolder')}
           firstDayOfWeek={1}
-          withFullScreenPortal
+         
           displayFormat="DD/MM/YYYY"
           hideKeyboardShortcutsPanel
           date={dueDate}
@@ -55,11 +90,11 @@ export class DueDatePicker extends PureComponent {
           onDateChange={newDate => this.onDateChange(newDate)}
         />
         {selectedDate !== null && (
-          <a className="clearDateBtn active" href="#" onClick={this.clearDate}>
-            <i className="ion-close-circled" />
-          </a>
+          <FormButton variant="secondary" onClick={this.clearDate}>
+            Clear
+          </FormButton>
         )}
-      </Container>
+      </DatePickerContainer>
     );
   }
 }

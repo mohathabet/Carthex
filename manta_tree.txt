@@ -1,0 +1,162 @@
+Manta/
+├── app.js
+├── dev-app-update.yml
+├── electron-builder.yml
+├── jest.config.js
+├── jest.setup.js
+├── jest.shim.js
+├── LICENSE
+├── manta_tree.txt
+├── package.json
+├── README.md
+├── structure.txt
+├── webpack.config.js
+├── webpack.parts.js
+├── __mocks__/
+│   ├── electron-settings.js
+│   ├── electron.js
+│   ├── pouchdb-browser.js
+│   └── uuid/
+│       └── v4.js
+├── app/
+│   ├── App.jsx
+│   ├── index.html
+│   ├── index.jsx
+│   ├── actions/
+│   │   ├── contacts.jsx
+│   │   ├── form.jsx
+│   │   ├── invoices.jsx
+│   │   ├── settings.jsx
+│   │   ├── ui.jsx
+│   │   └── __tests__/
+│   ├── components/
+│   │   ├── contacts/
+│   │   ├── form/
+│   │   ├── invoices/
+│   │   ├── layout/
+│   │   ├── settings/
+│   │   └── shared/
+│   ├── constants/
+│   │   ├── actions.jsx
+│   │   └── ItemTypes.jsx
+│   ├── containers/
+│   │   ├── Contacts.jsx
+│   │   ├── Form.jsx
+│   │   ├── Invoices.jsx
+│   │   ├── Settings.jsx
+│   │   └── __tests__/
+│   ├── helpers/
+│   │   ├── form.js
+│   │   ├── image.js
+│   │   ├── invoice.js
+│   │   ├── pouchDB.js
+│   │   ├── __mocks__/
+│   │   └── __tests__/
+│   ├── middlewares/
+│   │   ├── ContactsMW.jsx
+│   │   ├── FormMW.jsx
+│   │   ├── InvoicesMW.jsx
+│   │   ├── MeasureMW.jsx
+│   │   ├── SettingsMW.jsx
+│   │   ├── UIMiddleware.jsx
+│   │   └── __tests__/
+│   ├── reducers/
+│   │   ├── ContactsReducer.jsx
+│   │   ├── FormReducer.jsx
+│   │   ├── index.jsx
+│   │   ├── InvoicesReducer.jsx
+│   │   ├── SettingsReducer.jsx
+│   │   ├── UIReducer.jsx
+│   │   └── __tests__/
+│   ├── renderers/
+│   │   ├── dialog.js
+│   │   ├── menu.js
+│   │   ├── startup.js
+│   │   └── __mocks__/
+│   └── store/
+│       ├── enhancer.jsx
+│       └── index.jsx
+├── build/
+│   ├── icon.icns
+│   └── icon.ico
+├── helpers/
+│   ├── center-on-primary-display.js
+│   ├── date.js
+│   ├── formatNumber.js
+│   ├── notify.js
+│   └── __tests__/
+│       └── formatNumber.spec.js
+├── i18n/
+│   ├── i18n.js
+│   ├── de/
+│   │   ├── common.json
+│   │   ├── contacts.json
+│   │   ├── dialog.json
+│   │   ├── form.json
+│   │   ├── index.js
+│   │   ├── invoices.json
+│   │   ├── messages.json
+│   │   ├── preview.json
+│   │   ├── settings.json
+│   │   ├── tour.json
+│   ├── en/
+│   │   ├── common.json
+│   │   ├── contacts.json
+│   │   ├── dialog.json
+│   │   ├── form.json
+│   │   ├── index.js
+│   │   ├── invoices.json
+│   │   ├── messages.json
+│   │   ├── preview.json
+│   │   └── ...
+│   ├── fr/
+│   ├── id/
+│   ├── it/
+│   ├── sk/
+│   ├── ur-PK/
+│   ├── vi/
+│   └── zh-CN/
+├── libs/
+│   ├── currencies.json
+│   ├── dragNdrop.js
+│   ├── paymentTerms.js
+│   ├── sounds.js
+│   ├── __mocks__/
+│   └── __tests__/
+├── main/
+│   ├── preview-window.js
+│   ├── save-pdf.js
+│   ├── select-export-directory.js
+│   ├── select-logo-file.js
+│   ├── tour.js
+│   └── updater.js
+├── modal/
+│   ├── Dialog.jsx
+│   ├── index.html
+│   └── index.jsx
+├── preview/
+│   ├── index.html
+│   ├── index.jsx
+│   ├── Viewer.jsx
+│   ├── actions/
+│   ├── components/
+│   ├── constants/
+│   ├── containers/
+│   ├── helper/
+│   ├── reducers/
+│   └── templates/
+├── static/
+│   ├── css/
+│   ├── fonts/
+│   ├── imgs/
+│   └── sounds/
+├── test/
+│   ├── helper.js
+│   └── spec.js
+└── tour/
+    ├── index.html
+    ├── index.jsx
+    ├── Tour.jsx
+    ├── components/
+    ├── containers/
+    └── imgs/

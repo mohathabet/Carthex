@@ -1,0 +1,11 @@
+{
+  "types": {
+    "facture": "Facture",
+    "recu": "Reçu de Paiement",
+    "bon": "Bon de Livraison",
+    "devis": "Devis"
+  },
+  "sidebar": {
+    "documentType": "Document Type"
+  }
+} 

@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 
 // Custom Components
 import { Section } from '../shared/Section';
+import {
+  FormCard,
+  FormLabel,
+  FormTextarea
+} from '../shared/FormStyles';
 
 // Animation
 import _withFadeInAnimation from '../shared/hoc/_withFadeInAnimation';
@@ -53,14 +58,16 @@ export class Note extends Component {
     const { t } = this.props;
     return (
       <Section>
-        <label className="itemLabel">{t('form:fields:note')}</label>
-        <NoteContent
-          cols="50"
-          rows="4"
-          onChange={this.handleInputChange}
-          value={this.state.content}
-          placeholder={t('form:fields:note')}
-        />
+        <FormCard>
+          <FormLabel>{t('form:fields:note')}</FormLabel>
+          <FormTextarea
+            cols="50"
+            rows="4"
+            onChange={this.handleInputChange}
+            value={this.state.content}
+            placeholder={t('form:fields:note')}
+          />
+        </FormCard>
       </Section>
     );
   }

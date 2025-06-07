@@ -7,7 +7,9 @@ import Form from '../../containers/Form';
 import Invoices from '../../containers/Invoices';
 import Contacts from '../../containers/Contacts';
 import Settings from '../../containers/Settings';
-
+import Dashboard from '../../components/dashboard/Dashboard';
+import TVA from '../../containers/TVA';
+import TVACSS from '../../containers/TVACSS';
 // Layout
 import { AppMainContent } from '../shared/Layout';
 
@@ -20,9 +22,11 @@ class AppMain extends Component {
     const { activeTab } = this.props;
     return (
       <AppMainContent>
+        {activeTab === 'dashboard' && <Dashboard invoices={this.props.invoices} />}
         {activeTab === 'form' && <Form />}
         {activeTab === 'invoices' && <Invoices />}
         {activeTab === 'contacts' && <Contacts />}
+        {activeTab === 'tvacss' && <TVACSS invoices={this.props.invoices} />}
         {activeTab === 'settings' && <Settings />}
       </AppMainContent>
     );
@@ -33,4 +37,9 @@ AppMain.propTypes = {
   activeTab: PropTypes.string.isRequired,
 };
 
-export default AppMain;
+import { connect } from 'react-redux';
+
+export default connect(state => ({
+  activeTab: state.ui.activeTab,
+  invoices: Array.isArray(state.invoices) ? state.invoices : [],
+}))(AppMain);

@@ -17,6 +17,12 @@ import { isEmpty } from 'lodash';
 import RecipientForm from './RecipientForm';
 import RecipientsList from './RecipientsList';
 import { Section } from '../shared/Section';
+import {
+  FormCard,
+  FormLabel,
+  RadioGroup,
+  RadioLabel
+} from '../shared/FormStyles';
 
 // Component
 export class Recipient extends Component {
@@ -121,12 +127,12 @@ export class Recipient extends Component {
     const { t, contacts } = this.props;
     return (
       <Section>
-        <label className="itemLabel">{t('form:fields:recipient:name')} *</label>
-        {this.renderComponent()}
-        {contacts.length > 0 ? (
-          <div>
-            <div className="radio">
-              <label>
+        <FormCard>
+          <FormLabel>{t('form:fields:recipient:name')} *</FormLabel>
+          {this.renderComponent()}
+          {contacts.length > 0 && (
+            <RadioGroup>
+              <RadioLabel>
                 <input
                   type="radio"
                   onChange={this.toggleForm}
@@ -134,10 +140,8 @@ export class Recipient extends Component {
                   value="new"
                 />
                 {t('form:fields:recipient:add')}
-              </label>
-            </div>
-            <div className="radio">
-              <label>
+              </RadioLabel>
+              <RadioLabel>
                 <input
                   type="radio"
                   onChange={this.toggleForm}
@@ -145,10 +149,10 @@ export class Recipient extends Component {
                   value="select"
                 />
                 {t('form:fields:recipient:select')}
-              </label>
-            </div>
-          </div>
-        ) : null}
+              </RadioLabel>
+            </RadioGroup>
+          )}
+        </FormCard>
       </Section>
     );
   }

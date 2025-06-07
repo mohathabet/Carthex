@@ -1,0 +1,23 @@
+{
+  "header": {
+    "name": "جميع الفواتير"
+  },
+  "fields": {
+    "client": "العميل",
+    "invoiceID": "رقم الفاتورة",
+    "createdDate": "تاريخ الإنشاء",
+    "dueDate": "تاريخ الاستحقاق",
+    "total": "القيمة الإجمالية"
+  },
+  "status": {
+    "pending": "قيد الانتظار",
+    "paid": "مدفوع",
+    "refunded": "مسترد",
+    "cancelled": "ملغي"
+  },
+  "btns": {
+    "view": "عرض",
+    "edit": "تعديل",
+    "markAsPaid": "وضع علامة كمدفوع"
+  }
+} 
