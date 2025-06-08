@@ -9,7 +9,6 @@ import Contacts from '../../containers/Contacts';
 import Settings from '../../containers/Settings';
 import Dashboard from '../../components/dashboard/Dashboard';
 import TVA from '../../containers/TVA';
-import TVACSS from '../../containers/TVACSS';
 // Layout
 import { AppMainContent } from '../shared/Layout';
 
@@ -26,7 +25,7 @@ class AppMain extends Component {
         {activeTab === 'form' && <Form />}
         {activeTab === 'invoices' && <Invoices />}
         {activeTab === 'contacts' && <Contacts />}
-        {activeTab === 'tvacss' && <TVACSS invoices={this.props.invoices} />}
+        {activeTab === 'tvacss' && <TVA invoices={this.props.invoices} />}
         {activeTab === 'settings' && <Settings />}
       </AppMainContent>
     );
