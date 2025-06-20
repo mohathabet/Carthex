@@ -126,10 +126,11 @@ function Main({ invoice, configs, t }) {
   // Render Items
   const itemComponents = invoice.rows.map((row, index) => (
     <Item key={index}>
-      <td>
-        {padStart(index + 1, 2, 0)}
-        {'. '}
-        {row.description} ({row.quantity})
+      <td dir="ltr">
+        {configs.language === 'ar'
+          ? `${row.description} (${row.quantity})`
+          : `${padStart(index + 1, 2, 0)}. ${row.description} (${row.quantity})`
+        }
       </td>
       <td>
         {currencyBefore ? currency : null}{' '}

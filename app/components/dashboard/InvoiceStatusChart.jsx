@@ -61,8 +61,8 @@ const LegendColor = styled.div`
 `;
 
 const colors = {
-  paid: '#99c0ff',
-  pending: '#5091fc',
+  paid: '#5091fc',
+  pending: '#99c0ff',
   refunded: '#717785',
   cancelled: '#f4acac'
 };

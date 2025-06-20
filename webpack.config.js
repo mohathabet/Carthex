@@ -32,6 +32,7 @@ const productionConfig = merge([
           'redux-logger',
         ],
       }),
+      { 'electron-updater': 'commonjs2 electron-updater' },
     ],
   },
 ]);
@@ -65,6 +66,7 @@ const developmentConfig = merge([
         // react-hot-loader can work properly
         whitelist: ['webpack/hot/dev-server', 'webpack/hot/emitter'],
       }),
+      { 'electron-updater': 'commonjs2 electron-updater' },
     ],
   },
 ]);

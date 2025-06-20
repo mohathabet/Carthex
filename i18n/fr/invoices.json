@@ -18,6 +18,8 @@
   "btns": {
     "view": "Visualiser",
     "edit": "Modifier",
-    "markAsPaid": "Marquer comme payée"
+    "markAsPaid": "Marquer comme payée",
+    "duplicate": "Dupliquer",
+    "delete": "Supprimer"
   }
 }

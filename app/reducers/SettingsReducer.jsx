@@ -37,3 +37,6 @@ export const getDateFormat = createSelector(
   getSettingsState,
   settings => settings.saved.invoice.dateFormat
 );
+
+export const getEntrepriseInfo = state =>
+  (state.settings.saved.profile) || {};

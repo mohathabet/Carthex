@@ -18,6 +18,8 @@
   "btns": {
     "view": "View",
     "edit": "Edit",
-    "markAsPaid": "Mark as Paid"
+    "markAsPaid": "Mark as Paid",
+    "duplicate": "Duplicate",
+    "delete": "Delete"
   }
 }

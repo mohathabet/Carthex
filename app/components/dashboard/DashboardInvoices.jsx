@@ -49,6 +49,7 @@ const DashboardInvoices = ({ invoices, darkMode }) => {
               hideCheckbox
               t={v => v}
               dateFormat="DD/MM/YYYY"
+              hideMenu
             />
           ))}
         </InvoicesList>

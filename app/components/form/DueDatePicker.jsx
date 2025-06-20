@@ -79,11 +79,19 @@ export class DueDatePicker extends PureComponent {
       <DatePickerContainer>
         <SingleDatePicker
           id="invoice-duedate"
-          placeholder={t('form:fields:dueDate:placeHolder')}
           firstDayOfWeek={1}
-         
-          displayFormat="DD/MM/YYYY"
+          displayFormat={d =>
+            d
+              ? [
+                  String(d.date()).padStart(2, '0'),
+                  String(d.month() + 1).padStart(2, '0'),
+                  d.year()
+                ].join('/')
+              : ''
+          }
+          renderDayContents={day => day.date()}
           hideKeyboardShortcutsPanel
+          placeholder={t('form:fields:dueDate:placeHolder')}
           date={dueDate}
           focused={this.state.focused}
           onFocusChange={this.onFocusChange}

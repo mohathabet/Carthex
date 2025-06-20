@@ -112,6 +112,9 @@ const StatusBadge = styled.div`
   font-size: 13px;
   font-weight: 500;
   text-transform: none;
+  svg {
+   margin-right: 5px;      /* adjust to taste */
+ }
 
   background: ${({ status }) => {
     switch (status) {
@@ -320,7 +323,8 @@ class Invoice extends PureComponent {
       darkMode,
       isSelected,
       onToggleSelect,
-      hideCheckbox
+      hideCheckbox,
+      hideMenu
     } = this.props;
 
     const { menuOpen } = this.state;
@@ -387,84 +391,87 @@ class Invoice extends PureComponent {
             </InvoiceTotal>
           </InvoiceRowCell>
 
-          <InvoiceRowCell
-            style={{ width: 60, justifyContent: 'flex-end' }}
-            className="no-click"
-          >
-            <div ref={el => { this.triggerRef = el; }}>
-              <MenuTrigger
-                onClick={this.toggleMenu}
-                darkMode={darkMode}
-              >
-                ⋯
-              </MenuTrigger>
-              {menuOpen && (
-                <DropdownMenu
-                  ref={el => { this.menuRef = el; }}
+          {/* Action column: three-dot menu */}
+          {!hideMenu && (
+            <InvoiceRowCell
+              style={{ width: 60, justifyContent: 'flex-end' }}
+              className="no-click"
+            >
+              <div ref={el => { this.triggerRef = el; }}>
+                <MenuTrigger
+                  onClick={this.toggleMenu}
                   darkMode={darkMode}
-                  triggerTop={this.state.menuTop}
                 >
-                  {invoice.status !== 'paid' && (
-                    <MenuItem
-                      onClick={() => setInvoiceStatus(invoice._id, 'paid')}
-                      darkMode={darkMode}
-                      style={{ color: darkMode ? '#4ADE80' : '#16A34A' }}
-                    >
-                      <FiCheck />
-                      Mark as Paid
-                    </MenuItem>
-                  )}
-                  <MenuItem onClick={() => editInvoice(invoice)} darkMode={darkMode}>
-                    <FiEdit />
-                    Edit
-                  </MenuItem>
-                  <MenuItem onClick={() => duplicateInvoice(invoice)} darkMode={darkMode}>
-                    <FiCopy />
-                    Duplicate
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => deleteInvoice(invoice._id)}
+                  ⋯
+                </MenuTrigger>
+                {menuOpen && (
+                  <DropdownMenu
+                    ref={el => { this.menuRef = el; }}
                     darkMode={darkMode}
-                    style={{ color: darkMode ? '#F87171' : '#DC2626' }}
+                    triggerTop={this.state.menuTop}
                   >
-                    <FiTrash2 />
-                    Delete
-                  </MenuItem>
-                  <div style={{ position: 'relative' }}>
-                    <MenuItem
-                      onClick={this.toggleSubMenu}
-                      darkMode={darkMode}
-                      style={{ display: 'flex', alignItems: 'center', gap: 8 }}
-                    >
-                      {this.state.showStatusSubMenu ? (
-                        <FiChevronUp style={{ opacity: 0.3, fontSize: 16 }} />
-                      ) : (
-                        <FiChevronDown style={{ opacity: 0.3, fontSize: 16 }} />
-                      )}
-                      Change Status
-                    </MenuItem>
-
-                    {this.state.showStatusSubMenu && (
-                      <SubMenu darkMode={darkMode} style={{ right: '100%', marginRight: 4 }}>
-                        <MenuItem onClick={() => setInvoiceStatus(invoice._id, 'pending')} darkMode={darkMode}>
-                          <FiClock />
-                          Set as Pending
-                        </MenuItem>
-                        <MenuItem onClick={() => setInvoiceStatus(invoice._id, 'refunded')} darkMode={darkMode}>
-                          <FiDollarSign />
-                          Set as Refunded
-                        </MenuItem>
-                        <MenuItem onClick={() => setInvoiceStatus(invoice._id, 'cancelled')} darkMode={darkMode}>
-                          <FiXCircle />
-                          Set as Cancelled
-                        </MenuItem>
-                      </SubMenu>
+                    {invoice.status !== 'paid' && (
+                      <MenuItem
+                        onClick={() => setInvoiceStatus(invoice._id, 'paid')}
+                        darkMode={darkMode}
+                        style={{ color: darkMode ? '#4ADE80' : '#16A34A' }}
+                      >
+                        <FiCheck />
+                        Mark as Paid
+                      </MenuItem>
                     )}
-                  </div>
-                </DropdownMenu>
-              )}
-            </div>
-          </InvoiceRowCell>
+                    <MenuItem onClick={() => editInvoice(invoice)} darkMode={darkMode}>
+                      <FiEdit />
+                      Edit
+                    </MenuItem>
+                    <MenuItem onClick={() => duplicateInvoice(invoice)} darkMode={darkMode}>
+                      <FiCopy />
+                      Duplicate
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => deleteInvoice(invoice._id)}
+                      darkMode={darkMode}
+                      style={{ color: darkMode ? '#F87171' : '#DC2626' }}
+                    >
+                      <FiTrash2 />
+                      Delete
+                    </MenuItem>
+                    <div style={{ position: 'relative' }}>
+                      <MenuItem
+                        onClick={this.toggleSubMenu}
+                        darkMode={darkMode}
+                        style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+                      >
+                        {this.state.showStatusSubMenu ? (
+                          <FiChevronUp style={{ opacity: 0.3, fontSize: 16 }} />
+                        ) : (
+                          <FiChevronDown style={{ opacity: 0.3, fontSize: 16 }} />
+                        )}
+                        Change Status
+                      </MenuItem>
+
+                      {this.state.showStatusSubMenu && (
+                        <SubMenu darkMode={darkMode} style={{ right: '100%', marginRight: 4 }}>
+                          <MenuItem onClick={() => setInvoiceStatus(invoice._id, 'pending')} darkMode={darkMode}>
+                            <FiClock />
+                            Set as Pending
+                          </MenuItem>
+                          <MenuItem onClick={() => setInvoiceStatus(invoice._id, 'refunded')} darkMode={darkMode}>
+                            <FiDollarSign />
+                            Set as Refunded
+                          </MenuItem>
+                          <MenuItem onClick={() => setInvoiceStatus(invoice._id, 'cancelled')} darkMode={darkMode}>
+                            <FiXCircle />
+                            Set as Cancelled
+                          </MenuItem>
+                        </SubMenu>
+                      )}
+                    </div>
+                  </DropdownMenu>
+                )}
+              </div>
+            </InvoiceRowCell>
+          )}
         </InvoiceRow>
       </div>
     );
@@ -483,12 +490,14 @@ Invoice.propTypes = {
   isSelected: PropTypes.bool,
   onToggleSelect: PropTypes.func.isRequired,
   hideCheckbox: PropTypes.bool,
+  hideMenu: PropTypes.bool,
 };
 
 Invoice.defaultProps = {
   darkMode: false,
   isSelected: false,
   hideCheckbox: false,
+  hideMenu: false,
 };
 
 export default Invoice;

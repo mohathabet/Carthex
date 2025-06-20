@@ -8,7 +8,6 @@ import {
   FormCard,
   FormLabel,
   FormInput,
-  FormSelect,
   FormGrid,
   FormField,
   FormActions,
@@ -93,7 +92,7 @@ export class Tax extends PureComponent {
             </FormField>
           </FormGrid>
           <FormGrid>
-            <FormField>
+            <FormField style={{ marginRight: 16 }}>
               <FormLabel>{t('common:amount')} (%)</FormLabel>
               <FormInput
                 name="amount"
@@ -106,14 +105,15 @@ export class Tax extends PureComponent {
             </FormField>
             <FormField>
               <FormLabel>{t('form:fields:tax:method')}</FormLabel>
-              <FormSelect
+              <select
                 name="method"
                 value={this.state.method}
                 onChange={this.handleInputChange}
+                className="form-control"
               >
                 <option value="default">{t('common:default')}</option>
                 <option value="reverse">{t('form:fields:tax:reverse')}</option>
-              </FormSelect>
+              </select>
             </FormField>
           </FormGrid>
           {!this.isSettingsSaved() && (

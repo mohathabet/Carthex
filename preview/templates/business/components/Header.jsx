@@ -15,6 +15,12 @@ const InvoiceHeader = styled.div`
   flex: none;
   display: flex;
   justify-content: space-between;
+
+  /* when we're inside <Invoice dir='rtl'> ... */
+  [dir='rtl'] & {
+    flex-direction: row-reverse;   /* logo on the "right" */
+    text-align: right;
+  }
 `;
 
 const LeftColumn = styled.div`
@@ -26,9 +32,34 @@ const LeftColumn = styled.div`
 
 const Company = styled.div`
   margin-bottom: 1.66667em;
+
+  /* centre the little heading line (label) */
+  .label {
+    align-self: center;
+    text-align: center;
+  }
+
+  /* hard-left alignment for paragraph lines when parent <Invoice dir="rtl"> */
+  [dir='rtl'] & p {
+    direction: ltr;
+    text-align: left;
+    align-self: flex-start;
+  }
 `;
 
-const Recipient = styled.div``;
+const Recipient = styled.div`
+  .label {
+    align-self: center;
+    text-align: center;
+  }
+
+  /* same paragraph tweak in RTL */
+  [dir='rtl'] & p {
+    direction: ltr;
+    text-align: left;
+    align-self: flex-start;
+  }
+`;
 
 const RightColumn = styled.div`
   flex: 1;
@@ -54,22 +85,48 @@ const Heading = styled.h1`
   color: #cbc189;
   text-transform: uppercase;
   letter-spacing: 1px;
-  ${props =>
-    props.customAccentColor &&
+  /* occupy the full row and always hug the right edge */
+  width: 100%;
+  text-align: right;          /* works for both LTR & RTL */
+  align-self: flex-end;       /* stay flush with the column edge */
+
+  word-break: break-word;          /* allow safe wrapping */
+
+  ${p =>
+    p.customAccentColor &&
     `
-    color: ${props.accentColor};
+    color: ${p.accentColor};
   `};
 `;
 
 // Component
 function Header({ t, invoice, profile, configs }) {
   const { tax, recipient } = invoice;
-  const { language, accentColor, customAccentColor  } = configs;
+  const {
+    language,
+    accentColor,
+    customAccentColor,
+    documentType,
+  } = configs;
+
+  const docTypeLabel = t(
+    `preview:common:${documentType || 'invoice'}`,
+    { lng: language }
+  );
+
+  // Style override for meta lines (ID + dates) in Arabic
+  const metaStyle =
+    language === 'ar'
+      ? { direction: 'ltr', textAlign: 'left', alignSelf: 'flex-start' }
+      : {};
+
   return (
     <InvoiceHeader>
       <LeftColumn>
         <Company>
-          <h4>{profile.company}</h4>
+          <h4 style={{ direction: 'ltr', textAlign: 'left', alignSelf: 'flex-start' }}>
+            {profile.company}
+          </h4>
           <p>{profile.fullname}</p>
           <p>{profile.address}</p>
           <p>{profile.email}</p>
@@ -79,7 +136,9 @@ function Header({ t, invoice, profile, configs }) {
 
         {configs.showRecipient && (
           <Recipient>
-            <h4>{t('preview:common:billedTo', { lng: language })}</h4>
+            <h4 style={{ direction: 'ltr', textAlign: 'left', alignSelf: 'flex-start' }}>
+              {t('preview:common:billedTo', { lng: language })}
+            </h4>
             <p>{recipient.company}</p>
             <p>{recipient.fullname}</p>
             <p>{recipient.email}</p>
@@ -89,28 +148,28 @@ function Header({ t, invoice, profile, configs }) {
       </LeftColumn>
       <RightColumn>
         <Heading
+          dir={language === 'ar' ? 'rtl' : 'ltr'}
           accentColor={accentColor}
           customAccentColor={customAccentColor}
         >
-          {t('preview:common:invoice', { lng: language })}
+          {docTypeLabel}
         </Heading>
-        <h4>
-          #
-          {invoice.invoiceID
+        <h4 style={metaStyle}>
+          #{invoice.invoiceID
             ? invoice.invoiceID
             : truncate(invoice._id, {
                 length: 8,
                 omission: '',
               })}
         </h4>
-        <p>
+        <p style={metaStyle}>
           {t('preview:common:created', { lng: language })}:{' '}
           {moment(invoice.created_at)
             .locale(language)
             .format(configs.dateFormat)}
         </p>
         {invoice.dueDate && [
-          <p key="dueDate">
+          <p key="dueDate" style={metaStyle}>
             {t('preview:common:due', { lng: language })}:{' '}
             {invoice.dueDate.useCustom
               ? moment(invoice.dueDate.selectedDate)
@@ -129,7 +188,8 @@ function Header({ t, invoice, profile, configs }) {
               ${t(
                 `form:fields:dueDate:paymentTerms:${
                   invoice.dueDate.paymentTerm
-                }:description`
+                }:description`,
+                { lng: language }
               )}
             )
             `}

@@ -11,7 +11,15 @@ const omit = require('lodash').omit;
 
 // Electron Libs
 const { app, BrowserWindow, ipcMain } = require('electron');
-const { autoUpdater } = require('electron-updater');
+let autoUpdater; // will be set dynamically
+try {
+  // Bundle guard: externals / pruning can remove the folder,
+  // so we use a runtime check instead of a hard require.
+  ({ autoUpdater } = require('electron-updater'));
+} catch (_) {
+  // eslint-disable-next-line no-console
+  console.warn('[Carthex] electron-updater not available → auto-update disabled');
+}
 
 // Place a BrowserWindow in center of primary display
 const centerOnPrimaryDisplay = require('./helpers/center-on-primary-display');
@@ -352,7 +360,7 @@ function addEventListeners() {
       mainWindow.destroy();
       previewWindow.destroy();
       // Start the quit and update sequence
-      autoUpdater.quitAndInstall(false);
+      if (autoUpdater) autoUpdater.quitAndInstall(false);
     })
   });
 }

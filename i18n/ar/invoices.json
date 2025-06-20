@@ -18,6 +18,8 @@
   "btns": {
     "view": "عرض",
     "edit": "تعديل",
-    "markAsPaid": "وضع علامة كمدفوع"
+    "markAsPaid": "وضع علامة كمدفوع",
+    "duplicate": "تكرار",
+    "delete": "حذف"
   }
 } 

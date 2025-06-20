@@ -14,13 +14,17 @@ const Invoice = styled.div`
   padding: 3.33333em;
   width: 100%;
   font-family: 'Montserrat';
+  /* flip default text-align when <Invoice dir="rtl"> */
+  &[dir='rtl'] {
+    text-align: right;
+  }
   ${props =>
     props.baseFontSize &&
     `
     font-size: ${props.baseFontSize};
   `} .label, h4, th {
     font-weight: 500;
-    font-size: 0.66667em;
+    font-size: 0.8em;
     text-transform: uppercase;
     text-align: left;
     letter-spacing: 1px;
@@ -32,7 +36,7 @@ const Invoice = styled.div`
   }
   p {
     font-weight: 300;
-    font-size: 0.66667em;
+    font-size: 0.8em;
     color: #2c323a;
     line-height: 1.75;
     margin: 0;
@@ -59,8 +63,12 @@ import Footer from './components/Footer';
 
 // Component
 function Business(props) {
+  const { language } = props.configs;
   return (
-    <Invoice baseFontSize={setBaseFontSize(props.configs.fontSize)}>
+    <Invoice
+      baseFontSize={setBaseFontSize(props.configs.fontSize)}
+      dir={language === 'ar' ? 'rtl' : 'ltr'}
+    >
       <Logo {...props} />
       <Header {...props} />
       <Main {...props} />

@@ -17,7 +17,10 @@ ipc.on('select-export-directory', event => {
         if (err) {
           event.sender.send('no-access-directory', err.message);
         } else {
+          // Persist selection under legacy key for backward compatibility
           appConfig.set('exportDir', path[0]);
+          // Also update the current invoice settings
+          appConfig.set('invoice.exportDir', path[0]);
           event.sender.send('confirmed-export-directory', path[0]);
         }
       });

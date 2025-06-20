@@ -28,7 +28,7 @@ const Table = styled.table`
     border-bottom: 4px solid #efefd1;
     padding-bottom: 0.8em;
     &:last-child {
-      text-align: right;
+      text-align: end;
     }
   }
   ${props =>
@@ -37,7 +37,7 @@ const Table = styled.table`
     th { border-bottom: 4px solid ${props.accentColor};}
   `};
   tr > td:last-child {
-    text-align: right;
+    text-align: end;
   }
   td {
     color: #2c323a;
@@ -126,7 +126,11 @@ function Main({ invoice, configs, t }) {
   const itemComponents = invoice.rows.map((row, index) => (
     <tr key={index}>
       <td className="w5">{padStart(index + 1, 2, 0)}.</td>
-      <td>{row.description}</td>
+      <td>
+        <span dir="ltr">
+          {row.description} ({row.quantity})
+        </span>
+      </td>
       <td className="w15">
         {currencyBefore ? currency : null}{' '}
         {formatNumber(row.price, fraction, separator)}{' '}

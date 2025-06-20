@@ -16,15 +16,23 @@ const Wrapper = styled.div`
 `;
 
 const Heading = styled.h1`
-  font-family: 'Lora', 'Songti SC', serif;
-  font-size: 2.1em;
-  font-weight: 400;
-  margin-bottom: 1em;
-  color: #2c323a;
-  ${(props) =>
-    props.customAccentColor &&
+  width: 100%;                   /* keeps multi-line titles aligned */
+  font-family: 'Montserrat', sans-serif;
+  font-size:   2.5em;              /* same visual size as Business */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 1em 0;
+  line-height: 1.3;
+  color: #cbc189;                /* Business gold-like colour */
+  text-align: ${p => (p.language === 'ar' ? 'right' : 'left')};
+  word-break: break-word;        /* safe wrapping */
+
+  /* allow user accent override exactly like Business */
+  ${p =>
+    p.customAccentColor &&
     `
-    color: ${props.accentColor};
+    color: ${p.accentColor};
   `}
 `;
 
@@ -57,7 +65,7 @@ function Header({ t, invoice, profile, configs }) {
   return (
     <Wrapper language={language} dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div>
-        <Heading accentColor={accentColor} customAccentColor={customAccentColor}>
+        <Heading language={language} accentColor={accentColor} customAccentColor={customAccentColor}>
           {docTypeLabel}
         </Heading>
 

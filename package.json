@@ -10,17 +10,50 @@
     "email": "lequochung@me.com"
   },
   "main": "app.js",
+  "build": {
+    "appId": "com.carthex.desktop",
+    "productName": "Carthex",
+    "copyright": "Copyright © 2024 Carthex",
+    "files": [
+      "app.js",
+      "app/**/*",
+      "main/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "compression": "maximum",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "Carthex",
+      "artifactName": "${productName}-Setup-${version}-${arch}.${ext}"
+    }
+  },
   "scripts": {
     "start": "electron .",
     "dev": "webpack-dev-server --mode development",
-    "build": "webpack --env.production --mode production",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --env.production --mode production",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder -w",
+    "dist:win": "electron-builder -w",
     "test": "jest",
     "test:e2e": "mocha",
     "test:watch": "jest --watch",
     "dist:linux": "electron-builder --linux",
-    "dist:win": "electron-builder --win",
     "dist:mac": "electron-builder --mac",
-    "dist": "electron-builder -mwl",
     "release:linux": "yarn run build && yarn run dist:linux",
     "release:win": "yarn run build && yarn run dist:win",
     "release:mac": "yarn run build && yarn run dist:mac",
@@ -35,12 +68,14 @@
     "dotenv": "^5.0.1",
     "electron-is-dev": "^0.3.0",
     "electron-settings": "^3.1.2",
-    "electron-updater": "^2.21.0",
+    "electron-updater": "^6",
     "glob": "^7.1.2",
+    "html2canvas": "^1.4.1",
+    "html2pdf.js": "0.9.3",
     "i18next": "^10.5.0",
     "is-svg": "^3.0.0",
     "jimp": "^0.2.28",
-    "jspdf": "2.5.1",
+    "jspdf": "^2.5.1",
     "jspdf-autotable": "3.5.28",
     "moment": "^2.21.0",
     "pouchdb-browser": "6.2.0",
@@ -79,10 +114,11 @@
     "chai": "^4.1.2",
     "clean-webpack-plugin": "^0.1.19",
     "compression-webpack-plugin": "^1.1.11",
+    "cross-env": "^7.0.3",
     "devtron": "^1.4.0",
     "duplicate-package-checker-webpack-plugin": "^2.1.0",
-    "electron": "^1.8.3",
-    "electron-builder": "^20.4.1",
+    "electron": "22.3.27",
+    "electron-builder": "^26.0.12",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.18.2",
@@ -99,6 +135,7 @@
     "jest-styled-components": "^5.0.0",
     "lint-staged": "^7.0.0",
     "mocha": "^5.0.5",
+    "png-to-ico": "^2.1.8",
     "pre-commit": "^1.2.2",
     "prettier": "^1.11.1",
     "react-hot-loader": "^4.0.0",
@@ -126,5 +163,8 @@
     "singleQuote": true,
     "trailingComma": "es5",
     "semi": true
+  },
+  "resolutions": {
+    "minimatch": "^9.0.3"
   }
 }

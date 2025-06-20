@@ -9,6 +9,10 @@ import Contacts from '../../containers/Contacts';
 import Settings from '../../containers/Settings';
 import Dashboard from '../../components/dashboard/Dashboard';
 import TVA from '../../containers/TVA';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 78f7458 (TVA merge, dashboard tweaks)
 // Layout
 import { AppMainContent } from '../shared/Layout';
 
